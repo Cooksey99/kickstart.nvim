@@ -31,14 +31,24 @@ return {
       require('nvim_comment').setup()
 
       vim.keymap.set('n', '<leader>m', function()
+        print(vim.inspect {
+          vim.fn.visualmode(),
+          vim.fn.getpos "'<",
+          vim.fn.getpos "'>",
+        })
+
         require('Comment.api').toggle.linewise.current()
       end, { noremap = true, silent = true })
 
       vim.keymap.set('v', '<leader>m', function()
-        local start_line = vim.fn.getpos "'<"
-        local end_line = vim.fn.getpos "'>"
-
-        require('Comment.api').toggle.linewise(start_line, end_line)
+        vim.cmd 'normal! gv' -- Re-enter visual mode to get the updated selection
+        local visual_mode = vim.fn.visualmode()
+        print(vim.inspect {
+          visual_mode,
+          vim.fn.getpos "'<",
+          vim.fn.getpos "'>",
+        })
+        require('Comment.api').toggle.linewise(visual_mode)
       end, { noremap = true, silent = true })
     end,
   },
