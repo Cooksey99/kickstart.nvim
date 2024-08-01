@@ -208,6 +208,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'javascript', 'typescript', 'typescriptreact', 'javascriptreact' },
+  callback = function()
+    vim.bo.tabstop = 4 -- Or your preferred number of spaces
+    vim.bo.shiftwidth = 2
+    vim.bo.softtabstop = 2
+    -- vim.bo.expandtab = true -- Use spaces for indentation
+  end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -600,7 +610,22 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        tsserver = {},
+        tsserver = {
+          settings = {
+            typescript = {
+              format = {
+                insertSpaces = false,
+                tabSize = 2, -- Or your preferred number of spaces
+              },
+            },
+            javascript = {
+              format = {
+                insertSpaces = false,
+                tabSize = 2,
+              },
+            },
+          },
+        },
         --
 
         lua_ls = {
@@ -870,7 +895,7 @@ require('lazy').setup({
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
         additional_vim_regex_highlighting = { 'ruby' },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = { enable = true, disable = { 'ruby', 'typescript' } },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
