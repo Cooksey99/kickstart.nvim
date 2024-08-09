@@ -52,4 +52,10 @@ return {
       end, { noremap = true, silent = true })
     end,
   },
+  {
+    'jiangmiao/auto-pairs',
+  },
+  {
+    'windwp/nvim-ts-autotag',
+  },
 }
